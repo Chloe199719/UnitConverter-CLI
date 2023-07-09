@@ -1,5 +1,5 @@
 
-use unit_converter::units_type::{self, UnitLength};
+use unit_converter::units_type::{self, UnitLength, UnitVolume, UnitTemperature, UnitWeight};
 use std::env;
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -100,13 +100,86 @@ fn convert_length(init_unit: &units_type::Type, init_value: f64, final_unit: &un
 }
 
 fn convert_volume(init_unit: &units_type::Type, init_value: f64, final_unit: &units_type::Type) -> f64 {
-    todo!("Convert volume");
+    let init_unit = match init_unit {
+        units_type::Type::Volume(unit) => unit,
+        _ => panic!("Wrong type"),
+    };
+    let final_unit = match final_unit {
+        units_type::Type::Volume(unit) => unit,
+        _ => panic!("Wrong type"),
+    };
+    let init_value = match init_unit {
+        UnitVolume::Liter => UnitVolume::Liter.get_base_value() * init_value,
+        UnitVolume::Milliliter => UnitVolume::Milliliter.get_base_value() * init_value,
+        UnitVolume::FluidOunce => UnitVolume::FluidOunce.get_base_value() * init_value,
+        UnitVolume::Pint => UnitVolume::Pint.get_base_value() * init_value,
+        UnitVolume::Gallon => UnitVolume::Gallon.get_base_value() * init_value,
+        UnitVolume::Quart => UnitVolume::Quart.get_base_value() * init_value,
+        UnitVolume::Gil=> UnitVolume::Gil.get_base_value() * init_value,
+    };
+    match final_unit {
+        UnitVolume::Liter => init_value / UnitVolume::Liter.get_base_value(),
+        UnitVolume::Milliliter => init_value / UnitVolume::Milliliter.get_base_value(),
+        UnitVolume::FluidOunce => init_value / UnitVolume::FluidOunce.get_base_value(),
+        UnitVolume::Pint => init_value / UnitVolume::Pint.get_base_value(),
+        UnitVolume::Gallon => init_value / UnitVolume::Gallon.get_base_value(),
+        UnitVolume::Quart => init_value / UnitVolume::Quart.get_base_value(),
+        UnitVolume::Gil=> init_value / UnitVolume::Gil.get_base_value(),
+    }
+        
 }
 
+
 fn convert_temperature(init_unit: &units_type::Type, init_value: f64, final_unit: &units_type::Type) -> f64 {
-    todo!("Convert temperature");
+    let init_unit = match init_unit {
+        units_type::Type::Temperature(unit) => unit,
+        _ => panic!("Wrong type"),
+    };
+    let final_unit = match final_unit {
+        units_type::Type::Temperature(unit) => unit,
+        _ => panic!("Wrong type"),
+    };
+
+    let init_value = match init_unit {
+        UnitTemperature::Celsius => UnitTemperature::Celsius.get_base_value() * init_value,
+        UnitTemperature::Fahrenheit => UnitTemperature::Fahrenheit.get_base_value() * init_value,
+        UnitTemperature::Kelvin => UnitTemperature::Kelvin.get_base_value() * init_value,
+    };
+    match final_unit {
+        UnitTemperature::Celsius => init_value / UnitTemperature::Celsius.get_base_value(),
+        UnitTemperature::Fahrenheit => init_value / UnitTemperature::Fahrenheit.get_base_value(),
+        UnitTemperature::Kelvin => init_value / UnitTemperature::Kelvin.get_base_value(),
+    }
+    
 }
 
 fn convert_weight(init_unit: &units_type::Type, init_value: f64, final_unit: &units_type::Type) -> f64 {
-    todo!("Convert mass");
+    let init_unit = match init_unit {
+        units_type::Type::Weight(unit) => unit,
+        _ => panic!("Wrong type"),
+    };
+    let final_unit = match final_unit {
+        units_type::Type::Weight(unit) => unit,
+        _ => panic!("Wrong type"),
+    };
+
+    let init_value = match init_unit {
+        UnitWeight::Kilogram => UnitWeight::Kilogram.get_base_value() * init_value,
+        UnitWeight::Gram => UnitWeight::Gram.get_base_value() * init_value,
+        UnitWeight::Pound => UnitWeight::Pound.get_base_value() * init_value,
+        UnitWeight::Ounce => UnitWeight::Ounce.get_base_value() * init_value,
+        UnitWeight::Stone => UnitWeight::Stone.get_base_value() * init_value,
+        UnitWeight::Ton => UnitWeight::Ton.get_base_value() * init_value,
+        UnitWeight::Milligram => UnitWeight::Milligram.get_base_value() * init_value,
+    };
+        
+    match final_unit {
+        UnitWeight::Kilogram => init_value / UnitWeight::Kilogram.get_base_value(),
+        UnitWeight::Gram => init_value / UnitWeight::Gram.get_base_value(),
+        UnitWeight::Pound => init_value / UnitWeight::Pound.get_base_value(),
+        UnitWeight::Ounce => init_value / UnitWeight::Ounce.get_base_value(),
+        UnitWeight::Stone => init_value / UnitWeight::Stone.get_base_value(),
+        UnitWeight::Ton => init_value / UnitWeight::Ton.get_base_value(),
+        UnitWeight::Milligram => init_value / UnitWeight::Milligram.get_base_value(),
+    }
 }

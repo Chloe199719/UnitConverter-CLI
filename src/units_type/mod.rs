@@ -84,6 +84,20 @@ pub enum UnitWeight {
     
 }
 
+impl UnitWeight {
+    pub fn get_base_value(&self) -> f64 {
+        match self {
+            UnitWeight::Gram => 1.0,
+            UnitWeight::Kilogram => 1000.0,
+            UnitWeight::Milligram => 0.001,
+            UnitWeight::Pound => 453.59237,
+            UnitWeight::Ounce => 28.349523125,
+            UnitWeight::Stone => 6350.29318,
+            UnitWeight::Ton => 907184.74,
+        }
+    }
+}
+
 pub enum UnitVolume {
     Liter,
     Milliliter,
@@ -93,11 +107,34 @@ pub enum UnitVolume {
     Pint,
     Gil,
 }
+impl UnitVolume {
+    pub fn get_base_value(&self) -> f64 {
+        match self {
+            UnitVolume::Liter => 1.0,
+            UnitVolume::Milliliter => 0.001,
+            UnitVolume::FluidOunce => 0.0295735295625,
+            UnitVolume::Gallon => 3.785411784,
+            UnitVolume::Quart => 0.946352946,
+            UnitVolume::Pint => 0.473176473,
+            UnitVolume::Gil => 0.118294118,
+        }
+    }    
+}
     
 pub enum UnitTemperature {
     Celsius, 
     Fahrenheit,
     Kelvin, 
+}
+impl UnitTemperature {
+    pub fn get_base_value(&self) -> f64 {
+        match self {
+            UnitTemperature::Celsius => 1.0,
+            UnitTemperature::Fahrenheit => 33.8,
+            UnitTemperature::Kelvin => 274.15,
+        }
+    }
+    
 }
 pub struct BaseValue {
     pub value: f64,
