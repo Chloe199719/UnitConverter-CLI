@@ -1,3 +1,5 @@
+
+use unit_converter::units_type::{self, UnitLength};
 use std::env;
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -28,8 +30,18 @@ fn main() {
         return;
     }
 
+    let init_unit = units_type::parse_unit(&args[1]).unwrap(); 
+    let init_value = args[2].parse::<f64>().unwrap();
+    let final_unit = units_type::parse_unit(&args[3]).unwrap();
+    if !init_unit.is_same_type( &final_unit) {
+        println!("Units must be of the same type");
+        return;
+    }
 
-    println!("Hello, world!");
+    let result = convert_unit(&init_unit, init_value, &final_unit);
+    println!("{} {}  =  {} {}", init_value, init_unit.get_name(),  result, final_unit.get_name() );
+
+   
 }
 
 fn print_help(){
@@ -37,72 +49,64 @@ fn print_help(){
     
 }
 
-enum Type {
-    Length(UnitLength),
-    Weight(UnitWeight),
-    Volume(UnitVolume),
-    Temperature(UnitTemperature),
+fn convert_unit(init_unit: &units_type::Type, init_value: f64, final_unit: &units_type::Type) -> f64 {
+    match init_unit {
+        units_type::Type::Length(_) => convert_length(&init_unit, init_value, &final_unit),
+        units_type::Type::Volume(_) => convert_volume(&init_unit, init_value, &final_unit),
+        units_type::Type::Temperature(_) => convert_temperature(&init_unit, init_value, &final_unit),
+        units_type::Type::Weight(_) => convert_weight(&init_unit, init_value, &final_unit),
 
-}
-
-enum UnitWeight {
-    Gram,
-    Kilogram,
-    Milligram,
-    Pound,
-    Ounce,
-    Stone,
-    Ton,
-    
-}
-
-enum UnitVolume {
-    Liter,
-    Milliliter,
-    FluidOunce,
-    Gallon,
-    Quart,
-    Pint,
-    Gil,
-}
-    
-enum UnitTemperature {
-    Celsius, 
-    Fahrenheit,
-    Kelvin, 
-}
-
-enum UnitLength {
-    Kilometer, // 1000 meter
-    Hectometer, // 100 meter
-    Decameter, // 10 meter
-    Meter, // Base unit
-    Decimeter, // 0.1 meter
-    Centimeter, // 0.01 meter
-    Millimeter, // 0.001 meter
-    Feet, // 0.3048 meter
-    Inch, // 0.0254 meter
-    Yard, // 0.9144 meter
-    Mile, // 1609.344 meter
-    NauticalMile, // 1852 meter
-
-}
-    
-
-
-fn parse_unit(unit: &str) -> Result<Type, String> {
-    let binding = unit.to_lowercase();
-    let unit = binding.as_str();
-    match unit {
-        "m" | "meter" => Ok(Type::Length(UnitLength::Meter)),
-        "cm" |"centimeter" => Ok(Type::Length(UnitLength::Centimeter)),
-        "mm" | "millimeter" => Ok(Type::Length(UnitLength::Millimeter)),
-        "km" | "kilometer" => Ok(Type::Length(UnitLength::Kilometer)),
-        "ft" | "feet" => Ok(Type::Length(UnitLength::Feet)),
-        "in" | "inch" => Ok(Type::Length(UnitLength::Inch)),
-        "yd" | "yard" => Ok(Type::Length(UnitLength::Yard)),
-        "mi" | "mile" => Ok(Type::Length(UnitLength::Mile)),
-
-        _ => Err(format!("Unknown unit: {}", unit)),
+        
     }
+}
+
+fn convert_length(init_unit: &units_type::Type, init_value: f64, final_unit: &units_type::Type) -> f64 {
+    let init_unit = match init_unit {
+        units_type::Type::Length(unit) => unit,
+        _ => panic!("Wrong type"),
+    };
+    let final_unit = match final_unit {
+        units_type::Type::Length(unit) => unit,
+        _ => panic!("Wrong type"),
+    };
+    let init_value = match init_unit {
+        UnitLength::Kilometer(base_value) => base_value.value * init_value,
+        UnitLength::Hectometer(base_value) => base_value.value * init_value,
+        UnitLength::Decameter(base_value) => base_value.value * init_value,
+        UnitLength::Meter(base_value) => base_value.value * init_value,
+        UnitLength::Decimeter(base_value) => base_value.value * init_value,
+        UnitLength::Centimeter(base_value) => base_value.value * init_value,
+        UnitLength::Millimeter(base_value) => base_value.value * init_value,
+        UnitLength::Feet(base_value) => base_value.value * init_value,
+        UnitLength::Inch(base_value) => base_value.value * init_value,
+        UnitLength::Yard(base_value) => base_value.value * init_value,
+        UnitLength::Mile(base_value) => base_value.value * init_value,
+        UnitLength::NauticalMile(base_value) => base_value.value * init_value,
+    };
+    match final_unit {
+        UnitLength::Kilometer(base_value) => init_value / base_value.value,
+        UnitLength::Hectometer(base_value) => init_value / base_value.value,
+        UnitLength::Decameter(base_value) => init_value / base_value.value,
+        UnitLength::Meter(base_value) => init_value / base_value.value,
+        UnitLength::Decimeter(base_value) => init_value / base_value.value,
+        UnitLength::Centimeter(base_value) => init_value / base_value.value,
+        UnitLength::Millimeter(base_value) => init_value / base_value.value,
+        UnitLength::Feet(base_value) => init_value / base_value.value,
+        UnitLength::Inch(base_value) => init_value / base_value.value,
+        UnitLength::Yard(base_value) => init_value / base_value.value,
+        UnitLength::Mile(base_value) => init_value / base_value.value,
+        UnitLength::NauticalMile(base_value) => init_value / base_value.value,
+    }
+}
+
+fn convert_volume(init_unit: &units_type::Type, init_value: f64, final_unit: &units_type::Type) -> f64 {
+    todo!("Convert volume");
+}
+
+fn convert_temperature(init_unit: &units_type::Type, init_value: f64, final_unit: &units_type::Type) -> f64 {
+    todo!("Convert temperature");
+}
+
+fn convert_weight(init_unit: &units_type::Type, init_value: f64, final_unit: &units_type::Type) -> f64 {
+    todo!("Convert mass");
 }
