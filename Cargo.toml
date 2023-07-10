@@ -2,7 +2,10 @@
 name = "unit_converter"
 version = "0.1.0"
 edition = "2021"
-
+authors = ["Chloe Pratas <chloevision97@gmail.com> "]
+description = "A unit converter that converts between metric and imperial units."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/Chloe199719/UnitConverter-CLI"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
